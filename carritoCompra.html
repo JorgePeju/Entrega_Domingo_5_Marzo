@@ -13,50 +13,24 @@
 </head>
 
 <body>
-    <header class="h1">
-        <h1>PRÁCTICA CARRITO DE COMPRA</h1>
-        <div id="logoCarrito">BOTON VOLVER</div>
-    </header>
 
-
-    <main>
-        <section>
-            <div class="box">
-                <form name="search">
-                    <input type="text" class="input" name="txt" onmouseout="this.value = ''; this.blur();">
-                </form>
-                <i class="fas fa-search"></i>         
+        <div class="nav">
+          <a href="index.html">
+            <h2>Práctica Carrito Compra</h2>
+          </a>
+      
+          <a href="carritoCompra.html">
+            <div class="carrito">
+                <i class="fa-solid fa-cart-shopping"></i>
+              <div id="totalcarrito" class="totalcarrito">0</div>
             </div>
-        </section>
-
-        <div id="error"></div>
-        
-        <table id="tabla" class="tablacont">
-
-            <tr id="thead">
-                <th>Producto/Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th>Eliminar</th>
-            </tr>
-            <tbody id="tbody">
-                <tr>
-
-                    <td>IMAGEN CHUPI</td>
-                    <td>NOMBRE CHUPI</td>
-                    <td>10000</td>
-                    <td>TODOS</td>
-                    <td>SUBTU</td>
-                    <td>Eliminachone botone</td>        
-
-                </tr>
-            </tbody>
-        </table>
-
-        <div>BOTON FINALIZAR COMPRA</div>
-    </main>
+          </a>
+      
+        </div>
+      
+        <div id="label" class="text-center"></div>
+      
+        <div id="tablaCarrito" class="tablaCarrito"></div>
 
 
 </body>

@@ -5,89 +5,70 @@
 }
 
 :root {
-   --dark:black;
-   --medium: gray;
-   --light: white;
-   --cuasi: rgb(48, 43, 43);
+    --dark: black;
+    --medium: gray;
+    --light: white;
+    --cuasi: rgb(48, 43, 43);
+    --rojo: red;
 }
 
-.h1 {
-   background-color: var(--cuasi);
-   color: var(--light);
-   text-align: center;
-   padding: 5%;
-   width: 100%;
+
+i {
+    cursor: pointer;
 }
 
-#logoCarrito {
-    padding-top: 6%;
-    text-align: right;
-}
-
-.tablacont {
-    border-collapse: collapse;
-}
-
-.tablacont th, .tablacont td {
-   border-bottom: 1px solid var(--dark);
-   padding: 8px;
-   text-align: center;
-}
-
-.tablacont th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: center;
-}
-
-#formulario {
-    margin: auto;
-    padding: 10px;
-    padding-left: 10%;
-    text-align: center;
-  }
-
-  body{
- 
-    background: var(--light);
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-direction: column;
-    align-content: center;
-}
-.box{
-    position: relative;
-}
-
-.input {
-    padding: 5px;
-    width: 40px;
-    height: 40px;
-    background: none;
-    border: 4px solid var(--medium);
-    border-radius: 50px;
-    box-sizing: border-box;
-    font-size: 26px;
+a {
+    text-decoration: none;
     color: var(--light);
-    outline: none;
-    transition: .5s;
 }
-.box:hover input{
-    width: 350px;
-    background: var(--dark);
-    border-radius: 10px;
+
+.nav {
+    display: flex;
+    /* flex-direction: row; */
+    justify-content: space-between;
+    background-color: var(--cuasi);
+    color: var(--light);
+    padding: 25px 60px;
+    margin-bottom: 30px;
 }
-.box i{
+
+.carrito {
+    position: relative;
+    background-color: var(--light);
+    color: var(--cuasi);
+    font-size: 30px;
+    padding: 3px;
+    border-radius: 2px;
+}
+
+.totalcarrito {
     position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translate(-50%,-50%);
-    font-size: 26px;
-    color: var(--dark);
-    transition: .2s;
+    top: -15px;
+    right: -10px;
+    font-size: 16px;
+    background-color: var(--rojo);
+    color: var(--light);
+    padding: 3px;
+    border-radius: 3px;
 }
-.box:hover i{
-    opacity: 0;
-    z-index: -1;
+
+
+.productos {
+    display: grid;
+    grid-template-columns: repeat(4, 223px);
+    gap: 30px;
+    justify-content: center;
 }
+
+@media (max-width: 1000px) {
+    .productos {
+        grid-template-columns: repeat(2, 223px);
+    }
+}
+
+@media (max-width: 500px) {
+    .productos {
+        grid-template-columns: repeat(1, 223px);
+    }
+}
+
