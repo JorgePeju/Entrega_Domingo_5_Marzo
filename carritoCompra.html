@@ -2,50 +2,53 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito Compra</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito Compra</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+    integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" type="text/css" href="css/main.css" />
 
 </head>
 
 <body>
 
-        <div class="nav">
-          <a href="index.html">
-            <h2>Práctica Carrito Compra</h2>
-          </a>
-      
-          <a href="carritoCompra.html">
-            <div class="carrito">
-                <i class="fa-solid fa-cart-shopping"></i>
-              <div id="totalcarrito" class="totalcarrito">0</div>
-            </div>
-          </a>
-          <div>
-            <button id="volver">Volver</button>
-        </div>
-        </div>
-      
-        <div id="divtabla">
-          <table id="tablaEntera">
+  <div class="nav">
+    <a href="index.html">
+      <h2>Práctica Carrito Compra</h2>
+    </a>
+
+    <a href="carritoCompra.html">
+      <div class="carrito">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <div id="totalcarrito" class="totalcarrito">0</div>
+      </div>
+    </a>
+    <div>
+      <button id="volver">Volver</button>
+    </div>
+  </div>
+
+    <div class="toggle">
+        <table id="tablaEntera">
             <thead>
-              <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
-                <th>Eliminar</th>
-              </tr>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Eliminar</th>
+                </tr>
             </thead>
             <tbody id="tabla"></tbody>
-          </table>
+        </table>
+    </div>
 
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>
