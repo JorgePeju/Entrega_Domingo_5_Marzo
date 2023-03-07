@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const divCard = document.querySelector("#card");
   const divTabla = document.querySelector("#tabla");
   const toggle = document.querySelector(".toggle");
-  const fragmento = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
+  const totalCarrito = document.getElementById("totalcarrito");
 
 
   const arrayProductosSeleccionados = JSON.parse(localStorage.getItem("productos")) || [];
@@ -22,18 +23,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (target.matches(".comprar")) {
-
-      // location.assign("carritoCompra.html")
+      location.href = "carritoCompra.html";
     }
 
-    if (target.matches(".vaciar")) {
-      localStorage.removeItem('productos');
+    if (target.matches("#volver")) {
+      location.href = "index.html";
     }
 
     if (target.matches(".carrito i")) {
       toggle.classList.toggle("ocultar")
     }
 
+    if (target.matches(".vaciar")) {
+      arrayProductosSeleccionados.length = 0;
+      localStorage.removeItem("productos");
+      pintarTabla();
+    }
+    
   });
 
 
@@ -61,20 +67,18 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setLocal = () => {
-    localStorage.setItem("productos", JSON.stringify(subirLocal));
+    localStorage.setItem("productos", JSON.stringify(arrayProductosSeleccionados));
   };
   const getLocal = () => {
-    return JSON.parse(localStorage.getItem("productos")) || [];
+    return arrayProductosSeleccionados;
   };
 
 
   const pintarIndex = async () => {
     let objProductos = await obtenerDatos();
-    console.log(objProductos);
     const arrayProductos = objProductos.products;
 
     innerHTML = "";
-
 
     arrayProductos.forEach(({ title, id, images }) => {
       const divCardIndex = document.createElement("DIV");
@@ -83,10 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <div><img src="${images[0]}" class="card-img"></div>
           <h2 class="card-title">${title}</h2> 
           <button class="addBtn" id="${id}">Añadir</button>`;
-      fragmento.append(divCardIndex); // revisar el H del titulo
+      fragment.append(divCardIndex); // revisar el H del titulo
 
     });
-    divCard.append(fragmento);
+    divCard.append(fragment);
   };
 
 
@@ -94,12 +98,11 @@ document.addEventListener("DOMContentLoaded", () => {
     divTabla.innerHTML = "";
     const arrayProductosTabla = getLocal();
     let tablaHTML = "";
-    arrayProductosTabla.forEach(({ title, price, thumbnail, cantidad }) => {
-      let subtotal = price * cantidad;
+    arrayProductosTabla.forEach(({ titulo, precio, thumbnail, cantidad, subtotal }) => {
       tablaHTML += `<tr>
-          <td class=""><img src="${thumbnail}" class="thumbnail"></td>
-          <td>${title}</td>
-          <td>${price}</td>
+          <td class=""><div><img src="${thumbnail}" class="thumbnail"></div></td>
+          <td>${titulo}</td>
+          <td>${precio}</td>
           <td>${cantidad}</td>
           <td>${subtotal}</td>
         </tr>`;
@@ -126,24 +129,26 @@ document.addEventListener("DOMContentLoaded", () => {
       const productoExiste = arrayProductosSeleccionados.find((item) => item.id == id)
 
       if (productoExiste) {
+
         productoExiste.cantidad = productoExiste.cantidad + 1;
         productoExiste.subtotal = productoExiste.cantidad * productoExiste.subtotal;
+
       } else {
+
         let objNuevo = {
           id: producto.id,
           titulo: producto.title,
           cantidad: cantidad,
           precio: producto.price,
           subtotal: subtotal,
+          thumbnail: producto.thumbnail,
         }
+
         arrayProductosSeleccionados.push(objNuevo);
       }
-      console.log(arrayProductosSeleccionados)
-
-
-
+      totalCarrito.textContent = arrayProductosSeleccionados.length;
     }
-    // setLocal();
+    setLocal();
 
   };
 
@@ -158,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getLocal();
     } else {
       pintarIndex();
+      pintarTabla();
     }
   }
 
