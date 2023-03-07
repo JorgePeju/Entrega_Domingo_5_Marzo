@@ -1,210 +1,166 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
+  //              VARIABLES                 //
 
 
-  //              VARIABLES            //
+  const divCard = document.querySelector("#card");
+  const divTabla = document.querySelector("#tabla");
+  const toggle = document.querySelector(".toggle");
+  const fragmento = document.createDocumentFragment();
 
 
-  const arrayProductosSeleccionados = JSON.parse(localStorage.getItem('productos')) || [];
-  const divIndex = document.querySelector('#productos');
-  const pintarTablaCarrito = document.querySelector('#tablaCarrito');
-  
+  const arrayProductosSeleccionados = JSON.parse(localStorage.getItem("productos")) || [];
 
 
+  //                   EVENTOS                  //
 
+  document.addEventListener("click", ({ target }) => {
 
-  //                EVENTOS               //
+    if (target.matches(".addBtn")) {
+      let id = target.id;
+      buscarProducto(id);
+      pintarTabla()
+    }
 
-  document.addEventListener('click', ({target}) => {
+    if (target.matches(".comprar")) {
 
-      if(target.matches('#comprar')){
-          location.href = 'carritoCompra.html';
-      };
+      // location.assign("carritoCompra.html")
+    }
 
-      // if(target.matches('#volver')){ // cuando cree el boton volver
-      //     location.href = 'index.html';
-      // };
+    if (target.matches(".vaciar")) {
+      localStorage.removeItem('productos');
+    }
 
-      if(target.matches('#carrito')){
-          tablaCarrito.classList.toggle('hidden')
-      };
-
+    if (target.matches(".carrito i")) {
+      toggle.classList.toggle("ocultar")
+    }
 
   });
 
 
+  //                       FUNCIONES                   //
 
-  //                FUNCIONES                     //
-
-  const consultarDatos = async (id) => {
-    let enlace;
-    if (id) {
-      enlace = `https://dummyjson.com/products/${id}`
-    } else {
-      enlace = 'https://dummyjson.com/products/'
-    }
-
-
+  const obtenerDatos = async () => {
     try {
-      let solicitud = await fetch(enlace);
-      if (solicitud) {
-        let peticion = await solicitud.json()
-        return peticion
-      } else {
-        throw ({
-          ok: false,
-          mensaje: 'No pueden obtenerse los datos'
-        })
-      }
+      let ruta = `https://dummyjson.com/products/`;
+
+      let peticion = await fetch(ruta, {
+        method: "GET",
+      });
+
+      if (peticion.ok) {
+        const respuesta = await peticion.json();
+
+        return respuesta;
+
+      } else throw "Error en la consulta";
+
     } catch (error) {
-      return error
+
+      return error;
+    }
+  };
+
+  const setLocal = () => {
+    localStorage.setItem("productos", JSON.stringify(subirLocal));
+  };
+  const getLocal = () => {
+    return JSON.parse(localStorage.getItem("productos")) || [];
+  };
+
+
+  const pintarIndex = async () => {
+    let objProductos = await obtenerDatos();
+    console.log(objProductos);
+    const arrayProductos = objProductos.products;
+
+    innerHTML = "";
+
+
+    arrayProductos.forEach(({ title, id, images }) => {
+      const divCardIndex = document.createElement("DIV");
+      divCardIndex.classList.add("cardIndex");
+      divCardIndex.innerHTML += `
+          <div><img src="${images[0]}" class="card-img"></div>
+          <h2 class="card-title">${title}</h2> 
+          <button class="addBtn" id="${id}">Añadir</button>`;
+      fragmento.append(divCardIndex); // revisar el H del titulo
+
+    });
+    divCard.append(fragmento);
+  };
+
+
+  const pintarTabla = async () => {
+    divTabla.innerHTML = "";
+    const arrayProductosTabla = getLocal();
+    let tablaHTML = "";
+    arrayProductosTabla.forEach(({ title, price, thumbnail, cantidad }) => {
+      let subtotal = price * cantidad;
+      tablaHTML += `<tr>
+          <td class=""><img src="${thumbnail}" class="thumbnail"></td>
+          <td>${title}</td>
+          <td>${price}</td>
+          <td>${cantidad}</td>
+          <td>${subtotal}</td>
+        </tr>`;
+    });
+    let comprarHTML = '<button class="comprar">Comprar</button>';
+    let vaciarHTML = '<button class="vaciar">Vaciar</button>';
+    tablaHTML += `<tr>
+        <td colspan="4"></td>
+        <td>${comprarHTML} ${vaciarHTML}</td>
+      </tr>`;
+    divTabla.innerHTML = tablaHTML;
+  };
+
+  const buscarProducto = async (id) => {
+    const { products } = await obtenerDatos();
+    const producto = products.find((item) => item.id == id)
+
+
+    let cantidad = 1;
+    // if() // añadir cantidad sumatorio
+    let subtotal = cantidad * producto.price;
+
+    if (producto) {
+      const productoExiste = arrayProductosSeleccionados.find((item) => item.id == id)
+
+      if (productoExiste) {
+        productoExiste.cantidad = productoExiste.cantidad + 1;
+        productoExiste.subtotal = productoExiste.cantidad * productoExiste.subtotal;
+      } else {
+        let objNuevo = {
+          id: producto.id,
+          titulo: producto.title,
+          cantidad: cantidad,
+          precio: producto.price,
+          subtotal: subtotal,
+        }
+        arrayProductosSeleccionados.push(objNuevo);
+      }
+      console.log(arrayProductosSeleccionados)
+
+
+
+    }
+    // setLocal();
+
+  };
+
+
+
+  const init = () => {
+
+    const url = location.toString(); // .href -> escritura/lectura
+
+    if (url.includes("carritoCompra")) {
+      pintarTabla();
+      getLocal();
+    } else {
+      pintarIndex();
     }
   }
 
-
-
-  const pintarEstrellitas = () => {
-
-  
-
-  };
-
-
-
-  
-
-
-
-  const setLocal = () => {
-
-      localStorage.setItem('productos', JSON.stringify(arrayProductosSeleccionados));
-
-  }; 
-
-
-
-  const getLocal = () => {
-
-      return JSON.parse(localStorage.getItem('productos')) || [];
-
-  };
-
-
-
-  const almacenarDatos = async (id) => {   // revisar
-
-      const {solicitud} = await consultarDatos();
-
-      const {products} = solicitud;
-
-      let producto = products.find((item) => item.id == id);
-
-      if(arrayProductosSeleccionados.find((item) => item == producto)){
-
-
-      } else {
-          
-          let objProductosTabla = {
-              id: producto.id,
-              foto: producto.thumbnail,
-              nombre: producto.title,
-              precio: producto.price,
-              rating: producto.rating,
-              cantidad: 1,
-              subtotal: producto.price
-          }
-          
-          arrayProductosSeleccionados.push(objProductosTabla);
-
-          setLocal();
-
-          pintarTabla(id);
-
-      }
-
-  }; 
-
-  
-  const pintarIndex = async () => {
-    const {ok, solicitud} = await consultarDatos();
-    const {products} = solicitud;
-  
-    if (ok) {
-      let cards = '';
-  
-      products.forEach((item) => {
-        const imgEstrellas = pintarEstrellas(item.rating);
-  
-        const cardHTML = `
-          <article class="grid-item-cards">
-            <img src="${item.images[0]}">
-            <h3>${item.title}</h3>
-            <p>Precio: ${item.price.toLocaleString('de-DE')} €</p>
-            ${imgEstrellas}
-            <button class="card-btn" data-id="${item.id}">Añadir al carrito</button>
-          </article>
-        `;
-  
-        cards += cardHTML;
-      });
-  
-      divIndex.innerHTML = cards;
-    }
-  };
-
-
-  const pintarTabla = (id) => {
-    pintarTablaCarrito.innerHTML = '';
-  
-    const productos = getLocal();
-    const producto = productos.find((item) => item.id == id);
-  
-    if (producto) {
-      console.log('Producto encontrado. ');
-    } else {
-      let tablaHTML = '';
-  
-      productos.forEach((item) => {
-        const subtotal = item.precio * item.cantidad;
-  
-        const fila = `
-          <tr>
-            <td><img src="${item.foto}"></td>
-            <td>${item.nombre}</td>
-            <td>${item.precio.toLocaleString('de-DE')} €</td>
-            <td><i class="fa-sharp fa-solid fa-circle-minus"></i></td>
-            <td>${item.cantidad}</td>
-            <td><i class="fa-sharp fa-solid fa-circle-plus"></i></td>
-            <td>${subtotal.toLocaleString('de-DE')} €</td>
-            <td><i class="fa-sharp fa-solid fa-circle-xmark" id="xmark" data-id="${item.id}"></i></td>
-          </tr>
-        `;
-  
-        tablaHTML += fila;
-      });
-  
-      pintarTablaCarrito.innerHTML = tablaHTML;
-    }
-  };
-
-
-
-  const init = async () => {
-
-    let html = location.search
-    
-    if (html == urlIndex) {
-       // funcion pintar index
-       // funcion pintar carrito
-    };
-
-    if (html == urlCarrito) {
-       // obtener URL
-      // pintar carrito
-    }
-       
-    
-}
-init();
-
+  init()
 
 });

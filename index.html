@@ -19,22 +19,36 @@
             <h2>Práctica Carrito Compra</h2>
         </a>
 
-        <a href="carritoCompra.html">
+        
             <div class="carrito">
                 <i class="fa-solid fa-cart-shopping"></i>
                 <div id="totalcarrito" class="totalcarrito">0</div>
+                <div class="toggle ocultar">
+                    <table id="tablaEntera">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla"></tbody>
+                    </table>
+                    <a href="carritoCompra.html">Comprar</a> 
+                </div>
             </div>
-        </a>
-
-    </div>
-
-    <div id="productos" class="productos">
-
+     
 
     </div>
 
 
 
+
+
+    <div id="card" class="productos"></div>
 
     <script src="js/main.js"></script>
 
