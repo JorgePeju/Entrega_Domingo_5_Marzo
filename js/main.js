@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (target.matches(".vaciar")) {
       arrayProductosSeleccionados.length = 0;
       localStorage.removeItem("productos");
+      totalCarrito.textContent = arrayProductosSeleccionados.length;
       pintarTabla();
     }
     
@@ -80,15 +81,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     innerHTML = "";
 
-    arrayProductos.forEach(({ title, id, images }) => {
+    arrayProductos.forEach(({ title, id, images,estrellita }) => {
       const divCardIndex = document.createElement("DIV");
       divCardIndex.classList.add("cardIndex");
       divCardIndex.innerHTML += `
           <div><img src="${images[0]}" class="card-img"></div>
           <h2 class="card-title">${title}</h2> 
           <button class="addBtn" id="${id}">Añadir</button>`;
+          // Estrellitas(estrellita)
       fragment.append(divCardIndex); // revisar el H del titulo
-
     });
     divCard.append(fragment);
   };
@@ -122,7 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     let cantidad = 1;
-    // if() // añadir cantidad sumatorio
+  
     let subtotal = cantidad * producto.price;
 
     if (producto) {
@@ -142,6 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
           precio: producto.price,
           subtotal: subtotal,
           thumbnail: producto.thumbnail,
+          estrellita:producto.rating,
         }
 
         arrayProductosSeleccionados.push(objNuevo);
@@ -152,6 +154,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   };
 
+  // const Estrellitas = () => {
+
+
+  // }
 
 
   const init = () => {
