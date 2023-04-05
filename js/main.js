@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const fragment = document.createDocumentFragment();
   const totalCarrito = document.getElementById("totalcarrito");
 
+  const itemsPerPage = 10; 
+  let currentPage = 1; 
+  let totalItems = 0; 
+
   const arrayProductosSeleccionados = JSON.parse(localStorage.getItem("productos")) || [];
 
 
@@ -103,12 +107,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const divCardIndex = document.createElement("DIV");
       let estrellita = pintarEstrellas(rating);
       divCardIndex.classList.add("cardIndex");
-      divCardIndex.innerHTML += `
-          <div><img src="${images[0]}" class="card-img"></div>
-          <h2 class="card-title">${title}</h2>
-          <button class="addBtn" id="${id}">Añadir</button>`;
 
-      fragment.append(divCardIndex, estrellita);
+      divCardIndex.innerHTML +=`
+          <div><img src="${images[0]}" class="card-img"></div>
+          <h2 class="card-title text">${title}</h2>`;
+       
+      divCardIndex.append(estrellita)
+
+      divCardIndex.innerHTML +=`
+      <button class="addBtn" id="${id}">Añadir</button>`
+
+      fragment.append(divCardIndex);
 
     });
 
@@ -123,13 +132,15 @@ document.addEventListener("DOMContentLoaded", () => {
     let tablaHTML = "";
 
     arrayProductosTabla.forEach(({ titulo, precio, thumbnail, cantidad, subtotal }) => {
+
       tablaHTML += `<tr>
-          <td class=""><div><img src="${thumbnail}" class="thumbnail"></div></td>
+          <td class="cart-item"><div><img src="${thumbnail}" class="thumbnail"></div></td>
           <td>${titulo}</td>
           <td>${precio}</td>
           <td>${cantidad}</td>
           <td>${subtotal}</td>
         </tr>`;
+
     });
 
     let comprarHTML = '<button class="comprar">Comprar</button>';
@@ -170,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
           precio: producto.price,
           subtotal: subtotal,
           thumbnail: producto.thumbnail,
-          estrellita:producto.rating,
+          rating:producto.rating,
         }
 
         arrayProductosSeleccionados.push(objNuevo);
@@ -190,7 +201,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const divEstrella = document.createElement("DIV");
     divEstrella.className = "divEstrella";
     
-    const estrellaVacia = "estrellas/star0.png";
+    const estrellaVacia = "estrellas/star2.png";
     const estrellaLlena = "estrellas/star1.png";
     
     for (let i = 1; i <= 5; i++) {
